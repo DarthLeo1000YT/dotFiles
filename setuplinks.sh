@@ -29,3 +29,20 @@ ln -s $(pwd)/.zshrc $HOME/.zshrc
 echo "Symlinking repo zsh theme file ubunly.zsh-theme to $HOME/.oh-my-zsh/custom/themes/ubunly.zsh-theme"
 unlink $HOME/.oh-my-zsh/custom/themes/ubunly.zsh-theme
 ln -s $(pwd)/ubunly.zsh-theme $HOME/.oh-my-zsh/custom/themes/ubunly.zsh-theme
+
+
+while true; do
+
+read -p "Do you want to install nala? (y/n) " yn
+
+case $yn in
+	[yY] ) echo "Installing nala via apt.";
+               sudo apt install nala;
+	       break;;
+	[nN] ) echo "Exiting...";
+		exit;;
+	* ) echo "";;
+esac
+
+done
+
