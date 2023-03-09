@@ -174,7 +174,7 @@ rebootnginx(){
 perms(){
 	sudo chown -R crafty:crafty /var/opt/minecraft && sudo chmod -R 2777 /var/opt/minecraft
 }
-'
+
 alias updatecc='cd /var/opt/minecraft/crafty/crafty-commander && git pull'
 alias forceupdatecc='cd /var/opt/minecraft/crafty/crafty-commander && git reset --hard && git checkout dev && git pull'
 alias craftydir='cd /var/opt/minecraft/crafty/crafty-4'
