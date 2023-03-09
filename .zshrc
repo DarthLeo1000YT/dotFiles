@@ -113,30 +113,30 @@ alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
 
-#netinfo - shows network information for your system
-netinfo () {
-    myip=`lynx -dump -hiddenlinks=ignore -nolist http://checkip.dyndns.org:8245/ | sed '/^$/d; s/^[ ]*//g; s/[ ]*$//g' | awk /'Current/ {print $4}'` 
-    publicip=`/sbin/ifconfig | awk /'inet/ {print $2}' | head -n 1`
-    echo '╭───────────────── Network Information ───────────────╮'
-    echo "│  Local IP Address: ${publicip}                    │"
-    echo "│ Public IP Address: ${myip}                   │"
-    echo '╰─────────────────────────────────────────────────────╯'
-}
-sshpi(){
-    ssh darthleo@192.168.1.69
-}
-
 #Custom aliases
 alias dirbuster='source /opt/dirbuster/DirBuster-1.0-RC1.sh'
 alias cls='clear'
 alias ctl='sudo systemctl'
 alias restart='sudo reboot'
-alias remove='sudo nala remove'
-alias aptsearch='sudo nala search'
-alias listpackages='sudo nala list --installed'
-alias install='sudo nala install'
-alias instally='sudo nala install -y'
-alias update='sudo nala update && sudo nala upgrade'
+
+if command -v exa &> /dev/null; then
+    alias remove='sudo nala remove'
+    alias aptsearch='sudo nala search'
+    alias listpackages='sudo nala list --installed'
+    alias install='sudo nala install'
+    alias instally='sudo nala install -y'
+    alias update='sudo nala update && sudo nala upgrade'
+else
+    alias remove='sudo apt remove'
+    alias aptsearch='sudo apt search'
+    alias listpackages='sudo apt list --installed'
+    alias install='sudo apt install'
+    alias instally='sudo apt install -y'
+    alias update='sudo apt update && sudo apt upgrade'
+fi
+
+
+
 alias publicip='dig TXT +short o-o.myaddr.l.google.com @ns1.google.com'
 alias localip='hostname -I | awk "{print $1}"'
 alias snano='sudo nano'
@@ -161,10 +161,6 @@ alias speed='speedtest-cli --server 35491 --simple'
 alias cpv='rsync -ah --info=progress2'
 alias vopen="nautilus . 2>&1"
 alias rcopen="code ~/.bashrc"
-alias rccat="cat ~/.bashrc"
-alias refreshrc=". ~/.bashrc && echo 'refreshed...'"
-alias refresh=". ~/.bash_aliases && echo 'refreshed...'"
-
 
 portapp(){
 	sudo lsof -i -P -n | grep LISTEN | grep ':{print $1}'
@@ -178,12 +174,10 @@ rebootnginx(){
 perms(){
 	sudo chown -R crafty:crafty /var/opt/minecraft && sudo chmod -R 2777 /var/opt/minecraft
 }
-
-alias dirbuster='source /opt/dirbuster/DirBuster-1.0-RC1.sh'
+'
 alias updatecc='cd /var/opt/minecraft/crafty/crafty-commander && git pull'
 alias forceupdatecc='cd /var/opt/minecraft/crafty/crafty-commander && git reset --hard && git checkout dev && git pull'
-alias craftydir='cd /var/opt/minecraft/crafty/crafty-commander'
-alias aws='sudo ~/.aws/aws.sh'
+alias craftydir='cd /var/opt/minecraft/crafty/crafty-4'
 alias rr='if [ -f /var/run/reboot-required ]; then echo "reboot required"; else echo "No reboot needed"; fi'
 
 alias java11='/usr/lib/jvm/java-11-openjdk-amd64/bin/java'
