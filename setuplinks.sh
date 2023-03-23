@@ -1,7 +1,7 @@
 #!/bin/sh
 cd "${0%/*}"
 #echo $(pwd)
-
+sudo apt update
 setlink(){
     unlink "$HOME/$1"
     ln -s "$(pwd)/$2" "$HOME/$1"
