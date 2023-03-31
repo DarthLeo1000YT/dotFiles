@@ -119,7 +119,7 @@ alias cls='clear'
 alias ctl='sudo systemctl'
 alias restart='sudo reboot'
 
-if command -v exa &> /dev/null; then
+if command -v nala &> /dev/null; then
     alias remove='sudo nala remove'
     alias aptsearch='sudo nala search'
     alias listpackages='sudo nala list --installed'
