@@ -175,7 +175,14 @@ perms(){
 	sudo chown -R crafty:crafty /var/opt/minecraft && sudo chmod -R 2777 /var/opt/minecraft
 }
 
-alias updatecc='cd /var/opt/minecraft/crafty/crafty-commander && git pull'
+upcrafty(){
+  sudo systemctl stop crafty
+  sudo su - crafty -c "cd /var/opt/minecraft/crafty; ./update_crafty.sh"
+  sudo systemctl start crafty
+  sleep 1
+  sudo systemctl status crafty
+}
+
 alias forceupdatecc='cd /var/opt/minecraft/crafty/crafty-commander && git reset --hard && git checkout dev && git pull'
 alias craftydir='cd /var/opt/minecraft/crafty/crafty-4'
 alias rr='if [ -f /var/run/reboot-required ]; then echo "reboot required"; else echo "No reboot needed"; fi'
@@ -186,4 +193,4 @@ alias java16='/usr/lib/jvm/java-16-openjdk-amd64/bin/java'
 alias java17='/usr/lib/jvm/java-17-openjdk-amd64/bin/java'
 alias java11adopt='/usr/lib/jvm/jdk11adoptium/bin/java'
 alias jvmdir='echo "Java Install dir is /usr/lib/jvm/" && ls /usr/lib/jvm/'
-alias config='/usr/bin/git --git-dir=/home/darthleo/dotFiles'
+#alias config='/usr/bin/git --git-dir=/home/darthleo/dotFiles'
