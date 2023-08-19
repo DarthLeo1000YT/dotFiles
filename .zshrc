@@ -142,7 +142,7 @@ alias localip='hostname -I | awk "{print $1}"'
 alias snano='sudo nano'
 alias scode='sudo code --user-data-dir /home/darthleo/'
 alias ssubl='sudo subl'
-alias crafty='cd /var/opt/minecraft/crafty/ && sudo su crafty -'
+#alias crafty='cd /var/opt/minecraft/crafty/ && sudo su crafty -'
 alias deletelock='sudo rm /var/opt/minecraft/crafty/crafty-commander/app/config/session.lock && ls /var/opt/minecraft/crafty/crafty-commander/app/config'
 alias nginxdir='nautilus /etc/nginx/'
 alias lol='sudo find / | grep'
@@ -177,7 +177,7 @@ perms(){
 
 upcrafty(){
   sudo systemctl stop crafty
-  sudo su - crafty -c "cd /var/opt/minecraft/crafty; ./update_crafty.sh"
+  sudo su - crafty -c "cd /var/opt/minecraft/crafty; ./update_crafty.sh" > ~/.craftyupdate.log
   sudo systemctl start crafty
   sleep 1
   sudo systemctl status crafty
@@ -194,3 +194,59 @@ alias java17='/usr/lib/jvm/java-17-openjdk-amd64/bin/java'
 alias java11adopt='/usr/lib/jvm/jdk11adoptium/bin/java'
 alias jvmdir='echo "Java Install dir is /usr/lib/jvm/" && ls /usr/lib/jvm/'
 #alias config='/usr/bin/git --git-dir=/home/darthleo/dotFiles'
+crafty() {
+    if [ "$#" = "0" ]; then
+        echo "Switching to crafty user and crafty directory."
+        cd /var/opt/minecraft/crafty/
+        sudo ls -la -hF --group-directories-first --color=auto
+        sudo su crafty -
+        return
+    fi
+    if [ "$#" = "1" ]; then
+        if [ "$1" = "start" ]; then
+            echo "Starting Crafty"
+            sudo systemctl start crafty
+            return
+        fi
+        if [ "$1" = "stop" ]; then
+            echo "Stopping Crafty"
+            sudo systemctl stop crafty
+            return
+        fi
+        if [ "$1" = "restart" ]; then
+            echo "Restarting Crafty"
+            sudo systemctl restart crafty
+            return
+        fi
+        if [ "$1" = "enable" ]; then
+            echo "Starting Crafty automatically on boot"
+            sudo systemctl enable crafty
+            return
+        fi
+        if [ "$1" = "disable" ]; then
+            echo "Stopping Crafty from starting automatically on boot."
+            sudo systemctl disable crafty
+            return
+        fi
+        if [ "$1" = "status" ]; then
+            echo "Checking Crafty status."
+            sudo systemctl status crafty --no-pager -l
+            return
+        fi
+        if [ "$1" = "update" ]; then
+            echo "Updating Crafty."
+            sudo systemctl stop crafty
+            sudo su - crafty -c "cd /var/opt/minecraft/crafty; ./update_crafty.sh" | tee ~/.craftyupdate.log
+            sudo systemctl start crafty
+            sleep 1
+            sudo systemctl status crafty --no-pager -l
+            return
+        fi
+        echo "Invalid argument: $1."
+        echo "Valid arguments: [none], start, stop, restart, enable, disable, status, update"
+        return
+
+    fi
+    echo "Invalid number of arguments. Accepts 0 or 1 arguments."
+    return
+}
